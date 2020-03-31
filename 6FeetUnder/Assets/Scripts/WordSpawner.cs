@@ -41,5 +41,14 @@ public class WordSpawner : MonoBehaviour
             
         }
     }
-   
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ParseString("testing");
+            SpawnWords();
+        }
+    }
+
 }
