@@ -1,20 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InstructionSceneScript : Scene<TransitionData>
 {
     [SerializeField] private float SECONDS_TO_WAIT = 0.5f;
     TaskManager _tm = new TaskManager();
 
-    private Text instructions;
-    private Text click;
+
 
     internal override void OnEnter(TransitionData data)
     {
         //instructions = GameObject.Find("Instructions").GetComponent<Text>();
-        click = GameObject.Find("Click").GetComponent<Text>();
 
         //Color instructColor = instructions.color;
         //Color clickColor = new Color(106f/256f, 171f/256f, 173f/256f);
@@ -31,12 +28,7 @@ public class InstructionSceneScript : Scene<TransitionData>
 
     private void StartGame()
     {
-        _tm.Do
-        (
 
-                        new LERPColor(click, click.color, Color.white, 0.5f))
-               .Then(   new ActionTask(ChangeScene)
-        );
     }
 
     private void TitleTransition()

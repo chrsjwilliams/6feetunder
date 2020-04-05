@@ -32,7 +32,7 @@ public class WordSpawner : MonoBehaviour
             newWord.name = word;
             // create a word object for each word
             char[] charList = word.ToCharArray();
-            newWord.Init(charList);
+            newWord.Init(charList, 30);
                 // add each letter to its word
                 
 

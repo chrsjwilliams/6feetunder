@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 
 /*--------------------------------------------------------------------------------------*/
 /*																						*/
@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour
     [SerializeField]
     public float duration { get; private set; }                                 //  Current Time
     private bool stopTimer;
-	public Text currentTime { get; private set; }                               //  UI reference to current timer
+	//public Text currentTime { get; private set; }                               //  UI reference to current timer
 
 
 	/*--------------------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ public class Timer : MonoBehaviour
 	{
         stopTimer = false;
         tenSecondsLeft = false;
-		currentTime = GetComponent<Text>();
+		//currentTime = GetComponent<Text>();
         Services.EventManager.Register<StartTimerEvent>(OnStartTimerEvent);
         Services.EventManager.Register<StopTimerEvent>(OnStopTimerEvent);
 	}
@@ -86,7 +86,7 @@ public class Timer : MonoBehaviour
 
     public void DisplayTime()
     {
-        currentTime.text = FloatToTime(duration, "#00:00");
+        //currentTime.text = FloatToTime(duration, "#00:00");
     }
 
 	/*--------------------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ public class Timer : MonoBehaviour
                 tenSecondsLeft = false;
                 Services.EventManager.Fire(new TenSecondsLeftEvent(tenSecondsLeft));
             }
-			currentTime.text = FloatToTime(duration, "#00:00");
+			//currentTime.text = FloatToTime(duration, "#00:00");
 		}
 
         Services.EventManager.Fire(new TimeIsOverEvent(this));
@@ -124,7 +124,7 @@ public class Timer : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             duration++;
-            currentTime.text = FloatToTime(duration, "#00:00");
+            //currentTime.text = FloatToTime(duration, "#00:00");
         }
 
         Services.EventManager.Fire(new TimeIsOverEvent(this));

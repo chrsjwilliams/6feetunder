@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 //using TMPro;
 
 
@@ -176,9 +175,9 @@ public class LERPColor : TimedTask
     public Color Start { get; private set; }
     public Color End { get; private set; }
     public SpriteRenderer Sprite { get; private set; }
-    public Text Text { get; private set; }
+    //public Text Text { get; private set; }
     //public TextMeshProUGUI[] TMP { get; private set; }
-    public Image Image { get; private set; }
+    //public Image Image { get; private set; }
 
     public LERPColor(Color color, Color start, Color end, float duration) : base(duration)
     {
@@ -193,7 +192,7 @@ public class LERPColor : TimedTask
         End = end;
         Sprite = sprite;
     }
-
+    /*
     public LERPColor(Text text, Color start, Color end, float duration) : base(duration)
     {
         Start = start;
@@ -207,7 +206,7 @@ public class LERPColor : TimedTask
         End = end;
         Image = image;
     }
-    /*
+    
     public LERPColor(TextMeshProUGUI[] text, Color start, Color end, float duration) : base(duration)
     {
         Start = start;
@@ -219,8 +218,8 @@ public class LERPColor : TimedTask
     protected override void OnTick(float t)
     {
         if (Sprite) Sprite.color = Color.Lerp(Start, End, t);
-        else if (Text) Text.color = Color.Lerp(Start, End, t);
-        else if (Image) Image.color = Color.Lerp(Start, End, t);
+        //else if (Text) Text.color = Color.Lerp(Start, End, t);
+        //else if (Image) Image.color = Color.Lerp(Start, End, t);
         /*
         else if (TMP.Length >= 0)
         {
