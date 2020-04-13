@@ -16,10 +16,18 @@ public class Word : MonoBehaviour
     private Vector3 selectedScale = new Vector3(SELECTED_SCALE, SELECTED_SCALE, SELECTED_SCALE);
 
     [SerializeField]
-    private GameObject wordTouchBox;
+    public GameObject wordTouchBox;
 
-    public void Init(char[] charArray, float ftSize)
+    private void Start()
     {
+        gameObject.layer = LayerMask.NameToLayer("TouchLayer");
+
+    }
+
+    public void Init(char[] charArray, Vector3 pos ,float ftSize)
+    {
+        transform.parent = Services.GameManager.WordHolder.transform;
+        transform.localPosition = pos;
         //  Spawn letter task
         //  if possible have each letter appear one by one
         //  maybe have a cool effect idk
@@ -36,7 +44,7 @@ public class Word : MonoBehaviour
             letter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
             letter.name = charArray[i] + "";
             letter.transform.localPosition = new Vector3(fontSize * i, 0, 0);
-            letter.transform.localScale = new Vector3(50, 50, 50);
+            letter.transform.localScale = new Vector3(ftSize, ftSize, ftSize);
             letter.GetComponent<MeshCollider>().convex = true;
             letter.AddComponent<Rigidbody>();
             letter.GetComponent<Rigidbody>().useGravity = false;

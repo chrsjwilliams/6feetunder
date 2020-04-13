@@ -30,6 +30,13 @@ public class GameManager : MonoBehaviour
 
     public float duration { get; private set; }
 
+    [SerializeField]
+    private GameObject _wordHolder;
+    public GameObject WordHolder
+    {
+        get { return _wordHolder; }
+    }
+
 
     [SerializeField] private Camera _mainCamera;
     public Camera MainCamera
