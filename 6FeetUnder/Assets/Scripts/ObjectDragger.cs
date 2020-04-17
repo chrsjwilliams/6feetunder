@@ -77,16 +77,32 @@ public class ObjectDragger : MonoBehaviour
 
     private void OnMouseUp()
     {
+        word.UseGravity(true);
+        if(word.isTitleWord)
+        {
+            //TODO: Remove other touch input boxes
+            //Turn this into a task and stagger the fall times
+            foreach(Word w in Services.WordSpawner.spawnedWords)
+            {
+                if (w.isTitleWord)
+                {
+                    w.UseGravity(true);
+                }
+            }
+        }
+
         foreach(GameObject ltr in word.letters)
         {
             //ltr.transform.localScale = new Vector3( ltr.transform.localScale.x, 
             //                                        ltr.transform.localScale.y,
             //                                        1);
             ltr.transform.parent = word.transform;
-            ltr.transform.localScale = new Vector3(100, 100, 100);
-            ltr.GetComponent<Rigidbody>().useGravity = true;
+            //ltr.transform.localScale = new Vector3(100, 100, 100);
+            
 
         }
+
+
     }
     
 }

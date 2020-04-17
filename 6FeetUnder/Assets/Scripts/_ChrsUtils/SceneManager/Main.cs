@@ -85,6 +85,8 @@ public class Main : MonoBehaviour
         Services.GameManager.Init();
         Services.AudioManager = GetComponent<AudioManager>();
         Services.Scenes = new GameSceneManager<TransitionData>(gameObject, Services.Prefabs.Scenes);
+        Services.WordSpawner = GetComponent<WordSpawner>();
+        Services.WordSpawner.Init();
         
     }
 }

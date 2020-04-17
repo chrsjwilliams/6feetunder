@@ -12,4 +12,5 @@ public class Services
     public static InputManager InputManager { get; set; }
     
     public static GameSceneManager<TransitionData> Scenes { get; set; }
+    public static WordSpawner WordSpawner { get; set; }
 }

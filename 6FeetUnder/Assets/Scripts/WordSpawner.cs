@@ -31,19 +31,20 @@ public class WordSpawner : MonoBehaviour
         parsedWords = new List<string>(str.Split(' '));
     }
 
-    public void SpawnWords()
+    public void SpawnWords(float ftSize ,Vector3 offset,bool titleWords = false)
     {
         // Have an object that stores all the words and each word's letter
         for(int i = 0; i < parsedWords.Count; i++)
         {
             Word newWord = Instantiate(Services.Prefabs.Word);
+            spawnedWords.Add(newWord);
             newWord.name = parsedWords[i];
             // create a word object for each word
             char[] charList = parsedWords[i].ToCharArray();
 
-            Vector3 wordPos = new Vector3(spawnPosition.localPosition.x, spawnPosition.localPosition.y - (45 * i), spawnPosition.localPosition.z);
+            Vector3 wordPos = new Vector3(spawnPosition.localPosition.x, spawnPosition.localPosition.y - (45 * i), spawnPosition.localPosition.z) + offset;
 
-            newWord.Init(charList, wordPos,75);
+            newWord.Init(charList, wordPos,ftSize, titleWords);
                 // add each letter to its word
                 
 
@@ -58,7 +59,21 @@ public class WordSpawner : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ParseString("cannot do anything right");
-            SpawnWords();
+            SpawnWords(75, Vector3.zero);
+        }
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            ParseString("6feet");
+            Vector3 titleOffset1 = new Vector3(30, 0, 0);
+            SpawnWords(200, titleOffset1, true);
+
+            ParseString("under");
+            Vector3 titleOffset2 = new Vector3(30, -75, 0);
+            SpawnWords(200, titleOffset2, true);
+
+            ParseString("start");
+            Vector3 offset = new Vector3(55, -320, 0);
+            SpawnWords(150, offset,true);
         }
     }
 

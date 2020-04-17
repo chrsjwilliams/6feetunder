@@ -18,14 +18,17 @@ public class Word : MonoBehaviour
     [SerializeField]
     public GameObject wordTouchBox;
 
+    public bool isTitleWord { get; private set; }
+
     private void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("TouchLayer");
 
     }
 
-    public void Init(char[] charArray, Vector3 pos ,float ftSize)
+    public void Init(char[] charArray, Vector3 pos ,float ftSize, bool titleWord)
     {
+        isTitleWord = titleWord;
         transform.parent = Services.GameManager.WordHolder.transform;
         transform.localPosition = pos;
         //  Spawn letter task
@@ -43,7 +46,7 @@ public class Word : MonoBehaviour
             letter.transform.parent = transform;
             letter.transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
             letter.name = charArray[i] + "";
-            letter.transform.localPosition = new Vector3(fontSize * i, 0, 0);
+            letter.transform.localPosition = new Vector3(fontSize * i * 0.5f , 0, 0);
             letter.transform.localScale = new Vector3(ftSize, ftSize, ftSize);
             letter.GetComponent<MeshCollider>().convex = true;
             letter.AddComponent<Rigidbody>();
@@ -52,6 +55,14 @@ public class Word : MonoBehaviour
         }
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
+    }
+
+    public void UseGravity(bool b)
+    {
+        foreach(GameObject ltr in letters)
+        {
+            ltr.GetComponent<Rigidbody>().useGravity = b;
+        }
     }
 
 
