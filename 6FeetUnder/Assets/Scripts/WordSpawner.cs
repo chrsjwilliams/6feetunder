@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,17 @@ public class WordSpawner : MonoBehaviour
 {
 
    /*
-    *   TODO:   Spawn sentences that stay inside the screen.
-    *           Title screen transition to game scene
+    *   TODO:   Spawn sentences after title screen
+    *           Have sentenes appear after one falls
     * 
     */ 
 
+    [SerializeField]
+    public float spawnTimer {get; private set; }
+
     [SerializeField] private string sentenceToSpawn;
 
+    public List<string> sentenceCollection;
     public List<string> parsedWords { get; private set; }
 
     public List<Word> spawnedWords { get; private set; }
@@ -24,6 +29,16 @@ public class WordSpawner : MonoBehaviour
     public void Init()
     {
         spawnedWords = new List<Word>();
+        spawnTimer = 1.0f;
+        PopulateSentenceCollection();
+    }
+
+    private void PopulateSentenceCollection()
+    {
+        string text = Resources.Load<TextAsset>("SentenceCollection").text;
+ 
+     char[] separators = { ',', ';', '|','\n' };
+     sentenceCollection = new List<string>(text.Split(separators));
     }
 
     public void ParseString(string str)
@@ -58,7 +73,7 @@ public class WordSpawner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ParseString("cannot do anything right");
+            ParseString(sentenceCollection[1]);
             SpawnWords(75, Vector3.zero);
         }
         if(Input.GetKeyDown(KeyCode.S))
