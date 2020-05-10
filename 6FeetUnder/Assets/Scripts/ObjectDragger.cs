@@ -77,16 +77,19 @@ public class ObjectDragger : MonoBehaviour
 
     private void OnMouseUp()
     {
+        // Send message to wordspawner to start next word spawner!
         word.UseGravity(true);
+        Destroy(word.wordTouchBox);
         if(word.isTitleWord)
         {
-            //TODO: Remove other touch input boxes
+            //TODO: 
             //Turn this into a task and stagger the fall times
             foreach(Word w in Services.WordSpawner.spawnedWords)
             {
                 if (w.isTitleWord)
                 {
                     w.UseGravity(true);
+                    Destroy(w.wordTouchBox);
                 }
             }
         }
@@ -102,6 +105,12 @@ public class ObjectDragger : MonoBehaviour
 
         }
 
+        WordSpawnInfo info;
+        info.ftSize = 75;
+        info.offset = Vector3.zero;
+        info.titleWords = false;
+        Debug.Log("Hello");
+        Services.WordSpawner.StartSpawnTimer(1, info);
 
     }
     

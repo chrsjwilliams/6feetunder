@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
-//using TMPro;
-
+using UnityEngine.UI;
+using TMPro;
 
 ////////////////////////////////////////////////////////////////////////
 // GENERAL PURPOSE TASKS
@@ -21,6 +21,7 @@ public class ActionTask : Task
     protected override void Init()
     {
         Action();
+        SetStatus(TaskStatus.Success);
     }
 }
 
@@ -34,7 +35,7 @@ public abstract class TimedTask : Task
 
     protected TimedTask(float duration)
     {
-        Debug.Assert(duration > 0, "Cannot create a timed task with duration less than 0");
+        Debug.Assert(duration >= 0, "Cannot create a timed task with duration less than 0");
         Duration = duration;
     }
 
@@ -71,10 +72,33 @@ public abstract class TimedTask : Task
 }
 
 
-// A VERY simple wait task
-public class WaitTask : TimedTask
+public class WaitUnscaled : Task
 {
-    public WaitTask(float duration) : base(duration) { }
+    private float duration;
+    private float timeElapsed;
+
+    public WaitUnscaled(float dur)
+    {
+        timeElapsed = 0;
+        duration = dur;
+    }
+
+    internal override void Update()
+    {
+        timeElapsed += Time.unscaledDeltaTime;
+        if (timeElapsed >= duration) SetStatus(TaskStatus.Success);
+    }
+}
+
+// A VERY simple wait task
+public class Wait : TimedTask
+{
+    public Wait(float duration) : base(duration) { }
+
+    internal override void Update()
+    {
+        base.Update();
+    }
 }
 
 
@@ -98,16 +122,10 @@ public abstract class GOTask : Task
 public abstract class TimedGOTask : TimedTask
 {
     protected readonly GameObject gameObject;
-    protected readonly GameObject[] gameObjectArr;
 
     protected TimedGOTask(GameObject gameObject, float duration) : base(duration)
     {
         this.gameObject = gameObject;
-    }
-
-    protected TimedGOTask(GameObject[] gameObjectArr, float duration) : base(duration)
-    {
-        this.gameObjectArr = gameObjectArr;
     }
 }
 
@@ -144,30 +162,29 @@ public class LERP : TimedGOTask
 
     protected override void OnTick(float t)
     {
-        gameObject.transform.position = Vector3.Lerp(Start, End, t);
+        gameObject.transform.localPosition = Vector3.Lerp(Start, End, t);
     }
 }
 
 
-public class LERPNumber : TimedTask
+public class LERPProgressBar : TimedTask
 {
-    public float x { get; private set; }
-    public float y { get; private set; }
+    public Image progressBar { get; private set; }
+    public float endAmount { get; private set; }
     public float duration { get; private set; }
 
-    public LERPNumber(float _x, float _y, float _duration) : base(_duration)
+    public LERPProgressBar(Image _progressBar, float _endAmount, float _duration) : base(_duration)
     {
-        x = _x;
-        y = _y;
+        progressBar = _progressBar;
+        endAmount = _endAmount;
         duration = _duration;
     }
 
-    internal override void Update()
+    protected override void OnTick(float t)
     {
-        x = Mathf.Lerp(x, y, duration);
+        progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, endAmount, EasingEquations.Easing.BackEaseIn(t));
     }
 }
-
 
 public class LERPColor : TimedTask
 {
@@ -175,9 +192,10 @@ public class LERPColor : TimedTask
     public Color Start { get; private set; }
     public Color End { get; private set; }
     public SpriteRenderer Sprite { get; private set; }
-    //public Text Text { get; private set; }
-    //public TextMeshProUGUI[] TMP { get; private set; }
-    //public Image Image { get; private set; }
+    public Text Text { get; private set; }
+    public TextMeshProUGUI[] TMP { get; private set; }
+    public Image Image { get; private set; }
+    public Camera Camera;
 
     public LERPColor(Color color, Color start, Color end, float duration) : base(duration)
     {
@@ -186,13 +204,13 @@ public class LERPColor : TimedTask
         _Color = color;
     }
 
-    public LERPColor(SpriteRenderer sprite ,Color start, Color end, float duration) : base(duration)
+    public LERPColor(SpriteRenderer sprite, Color start, Color end, float duration) : base(duration)
     {
         Start = start;
         End = end;
         Sprite = sprite;
     }
-    /*
+
     public LERPColor(Text text, Color start, Color end, float duration) : base(duration)
     {
         Start = start;
@@ -213,23 +231,29 @@ public class LERPColor : TimedTask
         End = end;
         TMP = text;
     }
-    */
+    
+    public LERPColor(Camera camera,Color start, Color end, float duration) : base(duration)
+    {
+        Start = start;
+        End = end;
+        Camera = camera;
+    }
 
     protected override void OnTick(float t)
     {
         if (Sprite) Sprite.color = Color.Lerp(Start, End, t);
-        //else if (Text) Text.color = Color.Lerp(Start, End, t);
-        //else if (Image) Image.color = Color.Lerp(Start, End, t);
-        /*
+        else if (Text) Text.color = Color.Lerp(Start, End, t);
+        else if (Image) Image.color = Color.Lerp(Start, End, t);
+        else if (Camera) Camera.backgroundColor = Color.Lerp(Start, End, t);
         else if (TMP.Length >= 0)
         {
             for (int i = 0; i < TMP.Length; i++)
                 TMP[i].color = Color.Lerp(Start, End, t);
         }
-        */
         else _Color = Color.Lerp(Start, End, t);
     }
 }
+
 
 // A task to lerp a gameobject's scale
 public class Scale : TimedGOTask
@@ -243,23 +267,9 @@ public class Scale : TimedGOTask
         End = end;
     }
 
-    public Scale (GameObject[] gameObjectArr, Vector3 start, Vector3 end, float duration) : base(gameObjectArr, duration)
-    {
-        Start = start;
-        End = end;
-    }
-
     protected override void OnTick(float t)
     {
-        if(gameObject != null)
-            gameObject.transform.localScale = Vector3.Lerp(Start, End, t);
-        else
-        {
-            for (int i = 0; i < gameObjectArr.Length; i++)
-            {
-                gameObjectArr[i].transform.localScale = Vector3.Lerp(Start, End, t);
-            }
-        }
+        gameObject.transform.localScale = Vector3.Lerp(Start, End, t);
     }
 }
 

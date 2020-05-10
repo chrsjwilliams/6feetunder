@@ -78,6 +78,7 @@ MonoBehaviour:
   letters: []
   fontSize: 0
   wordTouchBox: {fileID: 897606083755416917}
+  wordCollider: {fileID: 0}
 --- !u!1 &6410369570949158821
 GameObject:
   m_ObjectHideFlags: 0

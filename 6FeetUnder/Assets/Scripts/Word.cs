@@ -18,6 +18,8 @@ public class Word : MonoBehaviour
     [SerializeField]
     public GameObject wordTouchBox;
 
+    public BoxCollider wordCollider;
+
     public bool isTitleWord { get; private set; }
 
     private void Start()
@@ -37,7 +39,14 @@ public class Word : MonoBehaviour
 
         //ListenforInput();
         fontSize = ftSize;
-        wordTouchBox.transform.localScale = new Vector3(fontSize * charArray.Length, fontSize, 1);
+
+        float xSize = (fontSize * charArray.Length) / 2;
+        float ySize = fontSize;
+
+        //wordCollider.size = new Vector3(xSize, 1, 1);
+        //wordCollider.center = new Vector3(xSize / 2, -25, 1);
+
+        wordTouchBox.transform.localScale = new Vector3(xSize, ySize, 1);
         wordTouchBox.transform.localPosition = new Vector3(0, fontSize / 2, 0);
 
         for(int i = 0; i < charArray.Length; i++)
@@ -59,11 +68,14 @@ public class Word : MonoBehaviour
 
     public void UseGravity(bool b)
     {
+
         foreach(GameObject ltr in letters)
         {
             ltr.GetComponent<Rigidbody>().useGravity = b;
         }
     }
+
+
 
 
     /*

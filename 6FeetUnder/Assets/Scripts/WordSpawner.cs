@@ -3,8 +3,16 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct WordSpawnInfo
+{
+    public float ftSize;
+    public Vector3 offset;
+    public bool titleWords;
+}
+
 public class WordSpawner : MonoBehaviour
 {
+    
 
    /*
     *   TODO:   Spawn sentences after title screen
@@ -25,6 +33,7 @@ public class WordSpawner : MonoBehaviour
     [SerializeField]
     private Transform spawnPosition;
 
+    private TaskManager _tm = new TaskManager();
 
     public void Init()
     {
@@ -37,14 +46,53 @@ public class WordSpawner : MonoBehaviour
     {
         string text = Resources.Load<TextAsset>("SentenceCollection").text;
  
-     char[] separators = { ',', ';', '|','\n' };
-     sentenceCollection = new List<string>(text.Split(separators));
+        char[] separators = { ',', ';', '|','\n' };
+        sentenceCollection = new List<string>(text.Split(separators));
     }
 
     public void ParseString(string str)
     {
         parsedWords = new List<string>(str.Split(' '));
     }
+
+    public void StartSpawnTimer(float dur, WordSpawnInfo info)
+    {
+        TaskQueue spawnWordTasks = new TaskQueue();
+        int index = sentenceCollection.Count - 1;
+        ParseString(sentenceCollection[index]);
+        spawnWordTasks.Add(new Wait(dur));
+        spawnWordTasks.Add(new ParameterizedActionTask<WordSpawnInfo>(SpawnWords, info));
+
+        _tm.Do(spawnWordTasks);
+    }
+
+    public void SpawnWords(WordSpawnInfo info)
+    {
+        // Have an object that stores all the words and each word's letter
+        for(int i = 0; i < parsedWords.Count; i++)
+        {
+            Word newWord = Instantiate(Services.Prefabs.Word);
+            spawnedWords.Add(newWord);
+            newWord.name = parsedWords[i];
+            // create a word object for each word
+            char[] charList = parsedWords[i].ToCharArray();
+
+            Vector3 wordPos = new Vector3(  spawnPosition.localPosition.x, 
+                                            spawnPosition.localPosition.y - (45 * i), 
+                                            spawnPosition.localPosition.z) + 
+                                            info.offset;
+
+            newWord.Init(charList, wordPos,info.ftSize, info.titleWords);
+                // add each letter to its word
+                
+
+                //  if possible have each letter appear one by one
+                //  maybe have a cool effect idk
+            
+        }
+    }
+
+
 
     public void SpawnWords(float ftSize ,Vector3 offset,bool titleWords = false)
     {
@@ -71,6 +119,7 @@ public class WordSpawner : MonoBehaviour
 
     private void Update()
     {
+        _tm.Update();
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ParseString(sentenceCollection[1]);
