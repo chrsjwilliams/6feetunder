@@ -109,7 +109,6 @@ public class ObjectDragger : MonoBehaviour
         info.ftSize = 75;
         info.offset = Vector3.zero;
         info.titleWords = false;
-        Debug.Log("Hello");
         Services.WordSpawner.StartSpawnTimer(1, info);
 
     }

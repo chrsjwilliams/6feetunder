@@ -15,8 +15,8 @@ public class WordSpawner : MonoBehaviour
     
 
    /*
-    *   TODO:   Spawn sentences after title screen
-    *           Have sentenes appear after one falls
+    *   TODO:   Figure out what to do with unused words!!!
+    *           
     * 
     */ 
 
@@ -45,7 +45,7 @@ public class WordSpawner : MonoBehaviour
     private void PopulateSentenceCollection()
     {
         string text = Resources.Load<TextAsset>("SentenceCollection").text;
- 
+
         char[] separators = { ',', ';', '|','\n' };
         sentenceCollection = new List<string>(text.Split(separators));
     }
