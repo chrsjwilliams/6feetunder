@@ -58,7 +58,7 @@ public class WordSpawner : MonoBehaviour
     public void StartSpawnTimer(float dur, WordSpawnInfo info)
     {
         TaskQueue spawnWordTasks = new TaskQueue();
-        int index = sentenceCollection.Count - 1;
+        int index = Random.Range(0,sentenceCollection.Count);
         ParseString(sentenceCollection[index]);
         spawnWordTasks.Add(new Wait(dur));
         spawnWordTasks.Add(new ParameterizedActionTask<WordSpawnInfo>(SpawnWords, info));
