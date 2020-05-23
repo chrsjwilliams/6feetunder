@@ -15,7 +15,7 @@ public class WordSpawner : MonoBehaviour
     
 
    /*
-    *   TODO:   Figure out what to do with unused words!!!
+    *   TODO:   Words will dissolve as the skew
     *           
     * 
     */ 
@@ -30,6 +30,10 @@ public class WordSpawner : MonoBehaviour
 
     public List<Word> spawnedWords { get; private set; }
 
+    public List<Word> displayedWords { get; private set; }
+
+    public List<string> selectedWords { get; private set; }
+
     [SerializeField]
     private Transform spawnPosition;
 
@@ -38,8 +42,12 @@ public class WordSpawner : MonoBehaviour
     public void Init()
     {
         spawnedWords = new List<Word>();
+        displayedWords = new List<Word>();
+        selectedWords = new List<string>();
         spawnTimer = 1.0f;
         PopulateSentenceCollection();
+
+        
     }
 
     private void PopulateSentenceCollection()
@@ -83,12 +91,12 @@ public class WordSpawner : MonoBehaviour
                                             info.offset;
 
             newWord.Init(charList, wordPos,info.ftSize, info.titleWords);
-                // add each letter to its word
-                
+            // add each letter to its word
+            displayedWords.Add(newWord);
 
-                //  if possible have each letter appear one by one
-                //  maybe have a cool effect idk
-            
+            //  if possible have each letter appear one by one
+            //  maybe have a cool effect idk
+
         }
     }
 
@@ -109,12 +117,31 @@ public class WordSpawner : MonoBehaviour
 
             newWord.Init(charList, wordPos,ftSize, titleWords);
                 // add each letter to its word
-                
+            
+            displayedWords.Add(newWord);
 
                 //  if possible have each letter appear one by one
                 //  maybe have a cool effect idk
             
         }
+    }
+
+    public void ClearWords()
+    {
+        foreach(Word word in displayedWords)
+        {
+            Destroy(word.gameObject);
+        }
+
+        displayedWords.Clear();
+    }
+
+    public bool RemoveSelectedWord(Word word)
+    {
+        // store selected words
+        selectedWords.Add(word.text);
+
+        return displayedWords.Remove(word);
     }
 
     private void Update()

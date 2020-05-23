@@ -23,7 +23,7 @@ Material:
   m_Name: Cloud
   m_Shader: {fileID: -6465566751694194690, guid: 14d771315c27b7248adc5c06ea0ce52d,
     type: 3}
-  m_ShaderKeywords: _BLENDMODE_ALPHA _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _BLENDMODE_ALPHA _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -38,16 +38,16 @@ Material:
     m_TexEnvs: []
     m_Floats:
     - Vector1_1100DBB4: 20
-    - Vector1_157C4927: 2
+    - Vector1_157C4927: 3
     - Vector1_2E449449: 0.01
-    - Vector1_31818DD2: 2
+    - Vector1_31818DD2: 1
     - Vector1_34A2131D: 98.61
     - Vector1_3F53ED5D: 30
-    - Vector1_528AE1A1: 124.4
+    - Vector1_528AE1A1: 120
     - Vector1_745E6F83: 2
     - Vector1_835232BE: 1000
-    - Vector1_8F0E7C7D: 10
-    - Vector1_B624F6DD: 2
+    - Vector1_8F0E7C7D: 1
+    - Vector1_B624F6DD: 12.5
     - Vector1_B73C588D: -2
     - Vector1_C24F477F: 0.02
     - Vector1_EB822D68: 10
@@ -61,7 +61,7 @@ Material:
     - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
-    - _EnableFogOnTransparent: 0
+    - _EnableFogOnTransparent: 1
     - _ReceivesSSR: 0
     - _RenderQueueType: 5
     - _RequireSplitLighting: 0

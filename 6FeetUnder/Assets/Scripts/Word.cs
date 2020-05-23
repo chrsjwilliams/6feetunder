@@ -9,6 +9,8 @@ public class Word : MonoBehaviour
     private const float UNSELECETED_SCALE = 0.75f;
     private const float SELECTED_SCALE = 1f;
     private const string LETTER_MODEL_PATH = "Models/Letters/";
+
+    public string text { get; private set; }
     public List<GameObject> letters;
     public float fontSize;
 
@@ -30,6 +32,8 @@ public class Word : MonoBehaviour
 
     public void Init(char[] charArray, Vector3 pos ,float ftSize, bool titleWord)
     {
+
+        text = new string(charArray);
         isTitleWord = titleWord;
         transform.parent = Services.GameManager.WordHolder.transform;
         transform.localPosition = pos;
@@ -60,6 +64,8 @@ public class Word : MonoBehaviour
             letter.GetComponent<MeshCollider>().convex = true;
             letter.AddComponent<Rigidbody>();
             letter.GetComponent<Rigidbody>().useGravity = false;
+            letter.AddComponent<Skew>();
+            letter.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Dissolve");
             letters.Add(letter);
         }
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);

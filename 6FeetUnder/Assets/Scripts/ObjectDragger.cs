@@ -79,6 +79,7 @@ public class ObjectDragger : MonoBehaviour
     {
         // Send message to wordspawner to start next word spawner!
         word.UseGravity(true);
+        Services.WordSpawner.RemoveSelectedWord(word);
         Destroy(word.wordTouchBox);
         if(word.isTitleWord)
         {
@@ -92,6 +93,11 @@ public class ObjectDragger : MonoBehaviour
                     Destroy(w.wordTouchBox);
                 }
             }
+            Services.WordSpawner.displayedWords.Clear();
+        }
+        else
+        {
+            Services.WordSpawner.ClearWords();
         }
 
         foreach(GameObject ltr in word.letters)
